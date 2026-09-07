@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huevo Chain (HV) · Official Layer-1 Blockchain</title>
+  <meta name="description" content="Huevo Chain es una blockchain soberana de Capa 1 basada en Proof of Work (Ethash), compatible con EVM y con un lanzamiento 100% justo sin pre-minado.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #111726;
+      --card-border: #1e293b;
+      --accent: #f59e0b;
+      --accent-hover: #fbbf24;
+      --accent-glow: rgba(245, 158, 11, 0.15);
+      --green: #10b981;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+    .navbar {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--card-border);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .brand-logo {
+      font-size: 28px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 20px var(--accent-glow);
+    }
+    .brand-name {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--green);
+      padding: 0.35rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--green);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem;
+    }
+    .hero {
+      text-align: center;
+      padding: 2rem 0 3.5rem;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      color: var(--accent);
+      padding: 0.4rem 1.2rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+    .hero p {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 2.5rem;
+    }
+    .hero-cta {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      font-weight: 700;
+      padding: 0.9rem 1.8rem;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      transition: all 0.2s;
+      text-decoration: none;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      font-weight: 600;
+      padding: 0.9rem 1.8rem;
+      border-radius: 12px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-secondary:hover {
+      border-color: #334155;
+      background: #162033;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 3.5rem;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    .stat-label {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-muted);
+      margin-bottom: 0.5rem;
+    }
+    .stat-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3.5rem;
+    }
+    .feature-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2rem;
+    }
+    .feature-icon {
+      font-size: 32px;
+      margin-bottom: 1rem;
+    }
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+    }
+    .feature-card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .section-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.25rem;
+      margin-bottom: 2.5rem;
+    }
+    .section-card h2 {
+      font-size: 1.5rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .config-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95rem;
+    }
+    .config-table td {
+      padding: 0.8rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .config-table td:first-child {
+      color: var(--text-muted);
+      width: 35%;
+    }
+    .config-table td:last-child {
+      font-family: 'JetBrains Mono', monospace;
+      color: #e2e8f0;
+      word-break: break-all;
+    }
+    .code-box {
+      background: #060911;
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+      color: #e2e8f0;
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+    .block-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.9rem;
+    }
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 2.5rem 1.5rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="#" class="brand">
+      <div class="brand-logo">🥚</div>
+      <span class="brand-name">Huevo Chain</span>
+    </a>
+    <div class="nav-links">
+      <a href="#metamask">Conectar</a>
+      <a href="#mineria">Minar</a>
+      <a href="https://github.com/interpago/huevo-chain" target="_blank">GitHub</a>
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        <span>Red Activa</span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container">
+    <section class="hero">
+      <div class="hero-badge">Layer-1 Sovereign Blockchain · Proof of Work</div>
+      <h1>La Criptomoneda Soberana<br><span style="color: var(--accent);">100% Minable</span> y sin Atajos</h1>
+      <p>
+        Inspirada en los principios monetarios de Bitcoin y potenciada con la tecnología de contratos inteligentes de Ethereum. 0 pre-minado, sin inversores privados.
+      </p>
+      <div class="hero-cta">
+        <button class="btn-primary" id="btnConnectHero">
+          <span>🦊</span>
+          <span>Agregar a MetaMask</span>
+        </button>
+        <a href="https://github.com/interpago/huevo-chain" target="_blank" class="btn-secondary">
+          <span>📂</span>
+          <span>Ver en GitHub</span>
+        </a>
+      </div>
+      <div id="heroMsg" style="font-size: 0.9rem; margin-top: 1rem; min-height: 1.2rem;"></div>
+    </section>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Bloque Actual</div>
+        <div class="stat-value" id="statBlock" style="color: var(--accent);">#...</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Consenso</div>
+        <div class="stat-value">PoW Ethash</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Chain ID</div>
+        <div class="stat-value">882323</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Recompensa / Bloque</div>
+        <div class="stat-value" style="color: var(--green);">+2.0 HV</div>
+      </div>
+    </div>
+
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">⚖️</div>
+        <h3>100% Fair Launch</h3>
+        <p>Cero pre-minado. Ni los fundadores ni nadie tienen monedas regaladas en el bloque 0. Cada HV en existencia proviene del trabajo computacional.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🛡️</div>
+        <h3>Soberanía Absoluta</h3>
+        <p>Una cadena independiente de Capa 1. No depende de Ethereum, Polygon ni Solana. Posee su propio libro contable inmutable y reglas propias.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>EVM y MetaMask</h3>
+        <p>A diferencia de Bitcoin, Huevo Chain ejecuta contratos en Solidity y permite crear DEXes, NFTs y conectarse en 1 clic con MetaMask en PC y celular.</p>
+      </div>
+    </div>
+
+    <section id="metamask" class="section-card">
+      <h2><span>🦊</span> Parámetros Oficiales para MetaMask</h2>
+      <table class="config-table">
+        <tr>
+          <td>Nombre de la red:</td>
+          <td><strong>Huevo Chain</strong></td>
+        </tr>
+        <tr>
+          <td>Nueva dirección URL de RPC:</td>
+          <td><code>https://alleged-powerpoint-malpractice-spaces.trycloudflare.com</code></td>
+        </tr>
+        <tr>
+          <td>Identificador de cadena (Chain ID):</td>
+          <td><code>882323</code></td>
+        </tr>
+        <tr>
+          <td>Símbolo de la moneda:</td>
+          <td><code>HV</code></td>
+        </tr>
+        <tr>
+          <td>Decimales:</td>
+          <td><code>18</code></td>
+        </tr>
+      </table>
+    </section>
+
+    <section id="mineria" class="section-card">
+      <h2><span>⛏️</span> Cómo Minar HV con tu Computador</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        Cualquier persona en el mundo puede poner su procesador (CPU) o tarjeta gráfica a minar. Cada bloque descubierto deposita +2.0 HV en tu billetera.
+      </p>
+
+      <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">🪟 En Windows (1 Clic)</h3>
+      <p style="color: var(--text-muted); font-size: 0.9rem;">
+        Descarga el paquete minero portable desde nuestro repositorio en GitHub, descomprime y ejecuta <code>INICIAR_MINERO.bat</code>:
+      </p>
+      <div style="margin: 1rem 0;">
+        <a href="https://github.com/interpago/huevo-chain" target="_blank" class="btn-primary" style="font-size: 0.95rem;">
+          <span>📦</span>
+          <span>Descargar Minero para Windows</span>
+        </a>
+      </div>
+
+      <h3 style="font-size: 1.1rem; margin-top: 1.5rem; margin-bottom: 0.5rem;">🐧 En Linux / macOS</h3>
+      <div class="code-box">
+git clone https://github.com/interpago/huevo-chain.git<br>
+cd huevo-chain<br>
+bash mine.sh 0xTuBilleteraDeMetaMask
+      </div>
+    </section>
+
+    <section class="section-card">
+      <h2><span>🧱</span> Bloques Recientes Minados</h2>
+      <div id="liveBlocks">
+        <div style="color: var(--text-muted); font-family: monospace;">Cargando bloques de la red...</div>
+      </div>
+    </section>
+  </div>
+
+  <footer>
+    <p>Huevo Chain (HV) · Código Abierto bajo Licencia MIT</p>
+    <p style="margin-top: 0.5rem;">
+      <a href="https://github.com/interpago/huevo-chain" target="_blank">Repositorio en GitHub</a> · 
+      <a href="https://github.com/interpago/huevo-chain/blob/main/WHITEPAPER.md" target="_blank">Whitepaper Técnico</a>
+    </p>
+  </footer>
+
+  <script>
+    const RPC_URL = 'https://alleged-powerpoint-malpractice-spaces.trycloudflare.com';
+    const CHAIN_ID_HEX = '0xd7693';
+
+    async function rpc(method, params = []) {
+      const res = await fetch(RPC_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jsonrpc: '2.0', method, params, id: 1 })
+      });
+      const data = await res.json();
+      return data.result;
+    }
+
+    async function refresh() {
+      try {
+        const hex = await rpc('eth_blockNumber');
+        const num = parseInt(hex, 16);
+        document.getElementById('statBlock').innerText = '#' + num.toLocaleString();
+
+        const blocksContainer = document.getElementById('liveBlocks');
+        let html = '';
+        for (let i = 0; i < Math.min(5, num); i++) {
+          const b = num - i;
+          html += `
+            <div class="block-row">
+              <span style="color: var(--accent); font-weight: bold;">Bloque #${b}</span>
+              <span style="color: var(--green);">🔨 Minado por PoW (+2.0 HV)</span>
+              <span style="color: #64748b;">✓ Verificado</span>
+            </div>
+          `;
+        }
+        blocksContainer.innerHTML = html;
+      } catch (e) {
+        console.error('Error:', e);
+      }
+    }
+
+    setInterval(refresh, 3000);
+    refresh();
+
+    document.getElementById('btnConnectHero').addEventListener('click', async () => {
+      const msg = document.getElementById('heroMsg');
+      if (!window.ethereum) {
+        msg.style.color = '#ef4444';
+        msg.innerText = 'Por favor abre esta web dentro de MetaMask en tu celular o instala la extensión en PC.';
+        return;
+      }
+      try {
+        msg.style.color = '#f59e0b';
+        msg.innerText = 'Conectando con MetaMask...';
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: CHAIN_ID_HEX,
+            chainName: 'Huevo Chain',
+            nativeCurrency: { name: 'Huevo', symbol: 'HV', decimals: 18 },
+            rpcUrls: [RPC_URL],
+            blockExplorerUrls: null
+          }]
+        });
+        msg.style.color = '#10b981';
+        msg.innerText = '¡Huevo Chain agregada exitosamente a tu MetaMask!';
+      } catch (err) {
+        msg.style.color = '#ef4444';
+        msg.innerText = 'Error al agregar la red: ' + (err.message || err);
+      }
+    });
+  </script>
+</body>
+</html>

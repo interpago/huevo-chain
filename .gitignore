@@ -1,0 +1,20 @@
+# Blockchain database & keystore
+data/
+HUEVO_CHAIN_MINER/data/
+*.log
+*.ipc
+
+# Binaries & archives
+bin/
+HUEVO_CHAIN_MINER/bin/
+*.zip
+*.tar.gz
+
+# Local miner wallet config
+wallet.txt
+HUEVO_CHAIN_MINER/wallet.txt
+password.txt
+
+# OS metadata
+.DS_Store
+Thumbs.db

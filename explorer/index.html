@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Huevo Chain Explorer & Control Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card: #111726;
+      --card-border: #1e293b;
+      --accent: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.2);
+      --green: #10b981;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 2rem 1rem;
+    }
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid var(--card-border);
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .logo-badge {
+      width: 52px;
+      height: 52px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 0 24px var(--accent-glow);
+    }
+    h1 { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.02em; }
+    .subtitle { color: var(--text-muted); font-size: 0.875rem; }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      color: var(--green);
+      padding: 0.4rem 0.9rem;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--green);
+      animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .stat-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.25rem;
+    }
+    .stat-label {
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.5rem;
+    }
+    .stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .action-card {
+      background: linear-gradient(180deg, rgba(245, 158, 11, 0.08) 0%, rgba(17, 23, 38, 1) 100%);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 20px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.25rem;
+    }
+    .btn-metamask {
+      background: #f59e0b;
+      color: #000;
+      border: none;
+      font-weight: 700;
+      font-size: 1.05rem;
+      padding: 0.9rem 2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 20px var(--accent-glow);
+    }
+    .btn-metamask:hover {
+      background: #fbbf24;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 25px rgba(245, 158, 11, 0.4);
+    }
+    .manual-config {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .manual-config h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+    }
+    .config-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+    .config-table td {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .config-table td:first-child {
+      color: var(--text-muted);
+      width: 35%;
+    }
+    .config-table td:last-child {
+      font-family: 'JetBrains Mono', monospace;
+      color: #e2e8f0;
+      word-break: break-all;
+    }
+    .blocks-section {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 1.5rem;
+    }
+    .blocks-section h3 {
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .block-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.85rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .block-num { color: var(--accent); font-weight: 700; }
+    .block-hash { color: var(--text-muted); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="brand">
+        <div class="logo-badge">⛏️</div>
+        <div>
+          <h1>Huevo Chain</h1>
+          <p class="subtitle">Blockchain Soberana Layer 1 · Proof of Work (PoW) · 100% Minable</p>
+        </div>
+      </div>
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>Minero PoW Activo (CPU)</span>
+      </div>
+    </header>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Último Bloque</div>
+        <div class="stat-value" id="currentBlock">#0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Moneda Nativa</div>
+        <div class="stat-value" style="color: var(--accent);">HV</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Chain ID</div>
+        <div class="stat-value">882323</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Monedas Minadas (Tu Wallet)</div>
+        <div class="stat-value" id="creatorBalance" style="font-size: 1.1rem; color: #10b981;">0 HV</div>
+      </div>
+    </div>
+
+    <div class="action-card">
+      <h2 style="font-size: 1.4rem;">Conectar a tu Blockchain</h2>
+      <p style="color: var(--text-muted); max-width: 540px;">
+        Haz un solo clic para registrar automáticamente <strong>Huevo Chain</strong> en tu MetaMask y ver tus <strong>100.000.000 de HV</strong> listos para transferir.
+      </p>
+      <button class="btn-metamask" id="btnAddMetaMask">
+        <span>🦊</span>
+        <span>Agregar Huevo Chain a MetaMask</span>
+      </button>
+      <div id="statusMsg" style="font-size: 0.9rem; min-height: 1.2rem; color: #10b981;"></div>
+    </div>
+
+    <div class="manual-config">
+      <h3>Parámetros de Red para MetaMask (Manual)</h3>
+      <table class="config-table">
+        <tr>
+          <td>Nombre de la red:</td>
+          <td><strong>Huevo Chain</strong></td>
+        </tr>
+        <tr>
+          <td>Nueva dirección URL de RPC:</td>
+          <td><code>https://alleged-powerpoint-malpractice-spaces.trycloudflare.com</code></td>
+        </tr>
+        <tr>
+          <td>Identificador de cadena (Chain ID):</td>
+          <td><code>882323</code></td>
+        </tr>
+        <tr>
+          <td>Símbolo de la moneda:</td>
+          <td><code>HV</code></td>
+        </tr>
+        <tr>
+          <td>Dirección del Creador (100M HV):</td>
+          <td><code>0x75e91570444AEa728B55700243E75a4206f29bB4</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="blocks-section">
+      <h3>
+        <span>Bloques Minados en Vivo</span>
+        <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: normal;">Cadencia: 2 seg / bloque</span>
+      </h3>
+      <div id="blockList"></div>
+    </div>
+  </div>
+
+  <script>
+    const RPC_URL = 'https://alleged-powerpoint-malpractice-spaces.trycloudflare.com';
+    const CHAIN_ID_DEC = 882323;
+    const CHAIN_ID_HEX = '0xd7693';
+
+    async function rpcCall(method, params = []) {
+      const res = await fetch(RPC_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jsonrpc: '2.0', method, params, id: Date.now() })
+      });
+      const data = await res.json();
+      return data.result;
+    }
+
+    async function updateDashboard() {
+      try {
+        const blockHex = await rpcCall('eth_blockNumber');
+        const blockNum = parseInt(blockHex, 16);
+        document.getElementById('currentBlock').innerText = '#' + blockNum.toLocaleString();
+
+        const balanceHex = await rpcCall('eth_getBalance', ['0x75e91570444AEa728B55700243E75a4206f29bB4', 'latest']);
+        if (balanceHex) {
+          const wei = BigInt(balanceHex);
+          const hv = Number(wei) / 1e18;
+          document.getElementById('creatorBalance').innerText = hv.toFixed(2) + ' HV';
+        }
+
+        // Render latest 5 blocks
+        const blockListEl = document.getElementById('blockList');
+        let html = '';
+        for (let i = 0; i < Math.min(6, blockNum); i++) {
+          const num = blockNum - i;
+          html += `
+            <div class="block-item">
+              <span class="block-num">Bloque #${num}</span>
+              <span style="color: #10b981;">🔨 Minado por PoW (Recompensa: +2 HV)</span>
+              <span class="block-hash">✓ Confirmado</span>
+            </div>
+          `;
+        }
+        blockListEl.innerHTML = html;
+      } catch (err) {
+        console.error('Error fetching block:', err);
+      }
+    }
+
+    setInterval(updateDashboard, 2000);
+    updateDashboard();
+
+    document.getElementById('btnAddMetaMask').addEventListener('click', async () => {
+      const msg = document.getElementById('statusMsg');
+      if (!window.ethereum) {
+        msg.style.color = '#ef4444';
+        msg.innerText = 'MetaMask no está detectado en tu navegador. Puedes agregarla manualmente con los datos de arriba.';
+        return;
+      }
+      try {
+        msg.style.color = '#f59e0b';
+        msg.innerText = 'Abriendo MetaMask...';
+
+        await window.ethereum.request({
+          method: 'wallet_addEthereumChain',
+          params: [{
+            chainId: CHAIN_ID_HEX,
+            chainName: 'Huevo Chain',
+            nativeCurrency: {
+              name: 'Huevo',
+              symbol: 'HV',
+              decimals: 18
+            },
+            rpcUrls: [RPC_URL],
+            blockExplorerUrls: null
+          }]
+        });
+
+        msg.style.color = '#10b981';
+        msg.innerText = '¡Huevo Chain agregada con éxito a tu MetaMask!';
+      } catch (err) {
+        msg.style.color = '#ef4444';
+        msg.innerText = 'Error o solicitud rechazada: ' + (err.message || err);
+      }
+    });
+  </script>
+</body>
+</html>

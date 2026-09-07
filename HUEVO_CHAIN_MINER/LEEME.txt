@@ -1,0 +1,31 @@
+================================================================
+           INSTRUCCIONES PARA MINAR HUEVO CHAIN (HV)
+================================================================
+
+Bienvenido a Huevo Chain, una blockchain Layer 1 independiente 
+basada en Proof of Work (Mineria Criptografica).
+
+COMO EMPEZAR A MINAR EN 3 PASOS:
+--------------------------------
+1. Haz doble clic en el archivo: "INICIAR_MINERO.bat"
+2. Pega tu direccion publica de MetaMask (la que empieza por 0x...)
+   y presiona ENTER.
+3. ¡Listo! Tu computador empezara a resolver bloques matematicos.
+   Por cada bloque que descubras, recibiras +2 HV directamente
+   en tu billetera.
+
+DATOS PARA AGREGAR HUEVO CHAIN A TU METAMASK:
+---------------------------------------------
+- Nombre de la red: Huevo Chain
+- Direccion URL de RPC: https://alleged-powerpoint-malpractice-spaces.trycloudflare.com
+- ID de cadena (Chain ID): 882323
+- Simbolo de la moneda: HV
+- Explorador Web: https://solving-earl-buyer-encourages.trycloudflare.com
+
+NOTAS IMPORTANTES:
+------------------
+- Puedes pausar la mineria cerrando la ventana negra o presionando Ctrl+C.
+- Si deseas cambiar tu direccion de pago, ejecuta "CAMBIAR_BILLETERA.bat".
+- El minero esta configurado para usar solo 1 hilo de CPU para que 
+  puedas seguir usando tu computador con total fluidez.
+================================================================

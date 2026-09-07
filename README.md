@@ -44,7 +44,7 @@ Cualquier persona puede minar **HV** utilizando su procesador (CPU) o tarjeta gr
 ### 🐧 En Linux / macOS
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/Alvz2323/huevo-chain.git
+git clone https://github.com/interpago/huevo-chain.git
 cd huevo-chain
 
 # 2. Iniciar minería (reemplaza con tu dirección pública)

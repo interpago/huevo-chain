@@ -4,7 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Huevo Chain (HV) · Official Layer-1 Blockchain</title>
-  <meta name="description" content="Huevo Chain es una blockchain soberana de Capa 1 basada en Proof of Work (Ethash), compatible con EVM y con un lanzamiento 100% justo sin pre-minado.">
+  <link rel="icon" type="image/png" href="logo.png">
+  <meta property="og:title" content="Huevo Chain (HV) · Official Layer-1 Blockchain">
+  <meta property="og:description" content="Blockchain soberana Proof of Work (Ethash) con EVM y 100% Fair Launch.">
+  <meta property="og:image" content="https://interpago.github.io/huevo-chain/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
@@ -290,7 +293,7 @@
 
   <nav class="navbar">
     <a href="#" class="brand">
-      <div class="brand-logo">🥚</div>
+      <img src="logo.png" alt="Huevo Chain Logo" style="width: 44px; height: 44px; border-radius: 12px; object-fit: cover; box-shadow: 0 0 20px rgba(245,158,11,0.25);">
       <span class="brand-name">Huevo Chain</span>
     </a>
     <div class="nav-links">
@@ -548,7 +551,8 @@ bash mine.sh 0xTuBilleteraDeMetaMask
             chainName: 'Huevo Chain',
             nativeCurrency: { name: 'Huevo', symbol: 'HV', decimals: 18 },
             rpcUrls: [RPC_URL],
-            blockExplorerUrls: null
+            blockExplorerUrls: ['https://interpago.github.io/huevo-chain/'],
+            iconUrls: ['https://interpago.github.io/huevo-chain/logo.png']
           }]
         });
         msg.style.color = '#10b981';

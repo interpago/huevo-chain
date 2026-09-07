@@ -412,6 +412,33 @@ bash mine.sh 0xTuBilleteraDeMetaMask
       </div>
     </section>
 
+    <section id="faucet" class="section-card">
+      <h2><span>🚰</span> Grifo Oficial (Faucet) & Smart Contract #1</h2>
+      <p style="color: var(--text-muted); margin-bottom: 1.5rem;">
+        Huevo Chain cuenta con soporte total para contratos inteligentes en Solidity (EVM). Este es el <strong>primer contrato inteligente desplegado en la historia de la red</strong>. Distribuye monedas HV de prueba a los miembros de la comunidad.
+      </p>
+
+      <div style="background: #060911; border: 1px solid var(--card-border); border-radius: 14px; padding: 1.25rem; margin-bottom: 1.5rem;">
+        <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 0.3rem;">DIRECCIÓN DEL CONTRATO EN HUEVO CHAIN:</div>
+        <div style="font-family: 'JetBrains Mono', monospace; color: var(--accent); font-size: 0.95rem; word-break: break-all;">0x11997421724197D2b81e03ad125539bb11070A0d</div>
+        <div style="margin-top: 0.75rem; display: flex; gap: 1rem; font-size: 0.85rem; color: var(--text-muted); flex-wrap: wrap;">
+          <span>Saldo disponible: <strong id="faucetBalance" style="color: var(--green);">1.0 HV</strong></span>
+          <span>•</span>
+          <span>Entrega: <strong>0.1 HV por turno</strong></span>
+          <span>•</span>
+          <span>Enfriamiento: <strong>1 minuto</strong></span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <button class="btn-primary" id="btnClaimFaucet">
+          <span>💧</span>
+          <span>Reclamar 0.1 HV con MetaMask</span>
+        </button>
+      </div>
+      <div id="faucetStatus" style="font-size: 0.9rem; margin-top: 1rem; min-height: 1.2rem;"></div>
+    </section>
+
     <section class="section-card">
       <h2><span>🧱</span> Bloques Recientes Minados</h2>
       <div id="liveBlocks">
@@ -460,6 +487,11 @@ bash mine.sh 0xTuBilleteraDeMetaMask
             </div>
           `;
         }
+        const fBalHex = await rpc('eth_getBalance', ['0x11997421724197D2b81e03ad125539bb11070A0d', 'latest']);
+        if (fBalHex) {
+          const fb = Number(BigInt(fBalHex)) / 1e18;
+          document.getElementById('faucetBalance').innerText = fb.toFixed(2) + ' HV';
+        }
         blocksContainer.innerHTML = html;
       } catch (e) {
         console.error('Error:', e);
@@ -468,6 +500,36 @@ bash mine.sh 0xTuBilleteraDeMetaMask
 
     setInterval(refresh, 3000);
     refresh();
+
+    const FAUCET_ADDRESS = '0x11997421724197D2b81e03ad125539bb11070A0d';
+    document.getElementById('btnClaimFaucet').addEventListener('click', async () => {
+      const msg = document.getElementById('faucetStatus');
+      if (!window.ethereum) {
+        msg.style.color = '#ef4444';
+        msg.innerText = 'MetaMask no detectado. Abre esta web dentro de MetaMask.';
+        return;
+      }
+      try {
+        msg.style.color = '#f59e0b';
+        msg.innerText = 'Solicitando 0.1 HV al Smart Contract... Por favor confirma en MetaMask.';
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        const from = accounts[0];
+        const txHash = await window.ethereum.request({
+          method: 'eth_sendTransaction',
+          params: [{
+            from: from,
+            to: FAUCET_ADDRESS,
+            data: '0xb26b6d62',
+            gas: '0x186a0'
+          }]
+        });
+        msg.style.color = '#10b981';
+        msg.innerHTML = '¡0.1 HV reclamados con éxito! Hash de tx: <code style="word-break:break-all;">' + txHash + '</code>';
+      } catch (err) {
+        msg.style.color = '#ef4444';
+        msg.innerText = 'Error o rechazo: ' + (err.message || err);
+      }
+    });
 
     document.getElementById('btnConnectHero').addEventListener('click', async () => {
       const msg = document.getElementById('heroMsg');

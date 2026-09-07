@@ -1,0 +1,28 @@
+{
+  "name": "huevo-chain",
+  "version": "1.0.0",
+  "description": "> **A Sovereign Layer-1 Proof-of-Work Blockchain with Native EVM Execution & 100% Fair Launch.**",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interpago/huevo-chain.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/interpago/huevo-chain/issues"
+  },
+  "homepage": "https://github.com/interpago/huevo-chain#readme",
+  "devDependencies": {
+    "ethers": "^5.7.2",
+    "solc": "^0.8.20"
+  }
+}
